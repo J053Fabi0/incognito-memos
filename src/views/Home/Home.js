@@ -1,8 +1,9 @@
 import axios from "axios";
 import MemoCard from "./MemoCard.js";
 import { Navbar } from "../../components";
+import { Container } from "react-bootstrap";
 import { API_URL } from "../../utils/constants";
-import { Container, Spinner } from "react-bootstrap";
+import SpinnerLoading from "./SpinnerLoading.js";
 import React, { Fragment, useState, useEffect } from "react";
 
 export default function Home() {
@@ -20,15 +21,7 @@ export default function Home() {
     <Fragment>
       <Navbar />
 
-      <Container>
-        {memos.length !== 0 ? (
-          <MemoCard memos={memos} />
-        ) : (
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
-        )}
-      </Container>
+      <Container>{memos.length !== 0 ? <MemoCard memos={memos} /> : <SpinnerLoading />}</Container>
     </Fragment>
   );
 }

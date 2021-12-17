@@ -1,7 +1,7 @@
 import React from "react";
+const { Header, Body } = Card;
 import styled from "@emotion/styled";
 import { Card } from "react-bootstrap";
-const { Header, Body } = Card;
 
 const options = { weekday: "short", year: "numeric", month: "short", day: "numeric", hour12: true };
 
