@@ -1,12 +1,15 @@
 import React from "react";
-import { Navbar as Navb, Container, Nav } from "react-bootstrap";
+import { Navbar as Navb, Container } from "react-bootstrap";
 
-const { Toggle, Collapse } = Navb;
+// const { Toggle, Collapse } = Navb;
+const { Brand } = Navb;
 
 export default function Navbar() {
   return (
     <Navb expand="lg" bg="dark" variant="dark">
       <Container>
+        <Brand>Incognito memos</Brand>
+        {/*
         <Toggle />
         <Collapse>
           <Nav className="justify-content-end w-100" style={{ color: "white" }}>
@@ -17,6 +20,7 @@ export default function Navbar() {
             </Nav.Item>
           </Nav>
         </Collapse>
+        */}
       </Container>
     </Navb>
   );
