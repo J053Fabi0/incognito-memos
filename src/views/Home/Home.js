@@ -1,9 +1,9 @@
-import React, { Fragment, useState, useEffect } from "react";
 import axios from "axios";
-import { API_URL } from "../../utils/constants";
+import MemoCard from "./MemoCard.js";
 import { Navbar } from "../../components";
-import { Container } from "react-bootstrap";
-import Card from "./Card.js";
+import { API_URL } from "../../utils/constants";
+import { Container, Spinner } from "react-bootstrap";
+import React, { Fragment, useState, useEffect } from "react";
 
 export default function Home() {
   const [memos, setMemos] = useState([]);
@@ -21,7 +21,13 @@ export default function Home() {
       <Navbar />
 
       <Container>
-        <Card memos={memos} />
+        {memos.length !== 0 ? (
+          <MemoCard memos={memos} />
+        ) : (
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        )}
       </Container>
     </Fragment>
   );

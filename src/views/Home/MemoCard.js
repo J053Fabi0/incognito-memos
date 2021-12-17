@@ -1,15 +1,15 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { Card as CardBootstrap } from "react-bootstrap";
-const { Header, Body } = CardBootstrap;
+import { Card } from "react-bootstrap";
+const { Header, Body } = Card;
 
 const options = { weekday: "short", year: "numeric", month: "short", day: "numeric", hour12: true };
 
-export default function Card({ memos }) {
+export default function MemoCard({ memos }) {
   const CardStyled = styled(({ className, children, txID }) => (
-    <CardBootstrap key={txID} id={txID} className={`memo-card mt-2 ${className}`}>
+    <Card key={txID} id={txID} className={`memo-card mt-2 ${className}`}>
       <a href={`#${txID}`}>{children}</a>
-    </CardBootstrap>
+    </Card>
   ))({
     ":hover": { borderColor: "#747474" },
     cursor: "pointer",
