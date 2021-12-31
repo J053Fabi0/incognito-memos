@@ -34,6 +34,7 @@ export default function Home() {
           if (!isNaN(queryPage)) {
             if (queryPage > lastPosiblePage) return lastPosiblePage;
             if (queryPage <= 0) return 1;
+            return queryPage;
           }
           return lastPosiblePage;
         })();
