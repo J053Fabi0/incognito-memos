@@ -9,7 +9,7 @@ import { useLocation, useSearchParams } from "react-router-dom";
 
 export default function Home() {
   let [searchParams, setSearchParams] = useSearchParams();
-  const queryPage = +searchParams.get("page");
+  const queryPage = searchParams.get("page") === null ? NaN : +searchParams.get("page");
   const querySize = (() => {
     const query = +searchParams.get("size") || 15;
     if (!isNaN(query)) {
