@@ -7,7 +7,7 @@ const options = { weekday: "short", year: "numeric", month: "short", day: "numer
 
 export default function MemoCard({ memos }) {
   const CardStyled = styled(({ className, children, txID }) => (
-    <Card key={txID} id={txID} className={`memo-card mt-2 ${className}`}>
+    <Card id={txID} className={`memoCard mt-2 ${className}`}>
       <a href={`#${txID}`}>{children}</a>
     </Card>
   ))({
@@ -20,11 +20,11 @@ export default function MemoCard({ memos }) {
     fontSize: "0.694rem",
   });
 
-  return memos.map(({ info, txID, date }) => (
-    <CardStyled txID={txID}>
+  return memos.map(({ memo, txID, date }) => (
+    <CardStyled key={txID} txID={txID}>
       <HeaderStyled text={new Date(date).toLocaleTimeString(undefined, options)} />
       <Body>
-        <p className="mb-0">{info}</p>
+        <p className="mb-0">{memo}</p>
       </Body>
     </CardStyled>
   ));
