@@ -4,7 +4,7 @@ import { Spinner } from "react-bootstrap";
 
 export default function SpinnerLoading() {
   const SpinnerStyled = styled(({ className }) => (
-    <div className={`${className} d-flex align-items-center flex-column`} id="spinnerLoading">
+    <div className={`${className} d-flex align-items-center flex-column`} data-testid="spinnerLoading">
       <Spinner animation="border" role="status">
         <span className="visually-hidden">Loading...</span>
       </Spinner>

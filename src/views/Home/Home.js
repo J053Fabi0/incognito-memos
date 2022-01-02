@@ -3,26 +3,27 @@ import MemoCard from "./MemoCard.js";
 import { Navbar } from "../../components";
 import { Container } from "react-bootstrap";
 import SpinnerLoading from "./SpinnerLoading.js";
-import { API_URL, maxSize } from "../../utils/constants";
+import { useSearchParams } from "react-router-dom";
+import NavigationButtons from "./NavigationButtons.js";
 import React, { Fragment, useState, useEffect } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { API_URL, maxSize, defaultSize } from "../../utils/constants";
 
 export default function Home() {
   let [searchParams, setSearchParams] = useSearchParams();
   const queryPage = searchParams.get("page") === null ? NaN : +searchParams.get("page");
   const querySize = (() => {
-    const query = +searchParams.get("size") || 15;
+    const query = +searchParams.get("size") || defaultSize;
     if (!isNaN(query)) {
-      if (query <= 0) return 15;
-      if (query > maxSize) return maxSize;
+      if (parseInt(query) <= 0) return defaultSize;
+      if (parseInt(query) > maxSize) return maxSize;
     }
-    return query;
+    return parseInt(query);
   })();
 
   const [memos, setMemos] = useState([]);
-  const [hasNext, setHasNext] = useState(false);
   const [page, setPage] = useState(undefined);
   const [size, setSize] = useState(querySize);
+  const [hasNext, setHasNext] = useState(false);
 
   // Get the lastPosiblePage and set the query param page accordingly.
   useEffect(() => {
@@ -32,9 +33,9 @@ export default function Home() {
         const { lastPosiblePage } = data.message;
         const pageToSet = (() => {
           if (!isNaN(queryPage)) {
-            if (queryPage > lastPosiblePage) return lastPosiblePage;
-            if (queryPage <= 0) return 1;
-            return queryPage;
+            if (parseInt(queryPage) > lastPosiblePage) return lastPosiblePage;
+            if (parseInt(queryPage) <= 0) return 1;
+            return parseInt(queryPage);
           }
           return lastPosiblePage;
         })();
@@ -64,7 +65,11 @@ export default function Home() {
 
       {memos.length !== 0 ? (
         <Container>
+          <NavigationButtons />
+
           <MemoCard memos={memos} />
+
+          <NavigationButtons />
         </Container>
       ) : (
         <SpinnerLoading />
