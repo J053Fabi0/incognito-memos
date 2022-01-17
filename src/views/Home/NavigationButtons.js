@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { ButtonGroup, Button, Form } from "react-bootstrap";
 
-export default function NavigationButtons({ actual, size, setActual }) {
+export default function NavigationButtons({ actual, size, setActual, isLoading }) {
   const [value, setValue] = useState(actual);
 
   useEffect(() => actual !== value && setValue(actual), [actual]);
 
   const manageChangeInValue = ({ target: { value } }) => {
+    if (isLoading) return;
     const parsed = parseInt(value);
     if (!isNaN(parsed) && parsed <= size && parsed >= 1) setValue(parsed);
   };
-  const setValueAndActual = (value) => setValue(value) & setActual(value);
+  const setValueAndActual = (value) => !isLoading && setValue(value) & setActual(value);
 
   return (
     <div className="w-100 my-3 d-flex justify-content-center" data-testid="navigationButtons">
       {actual >= 4 ? (
         <ButtonGroup className="me-2">
-          <Button onClick={() => setValueAndActual(1)}>1</Button>
+          <Button disabled={isLoading} onClick={() => setValueAndActual(1)}>
+            1
+          </Button>
         </ButtonGroup>
       ) : null}
 
@@ -27,21 +30,20 @@ export default function NavigationButtons({ actual, size, setActual }) {
           .reverse()
           .filter((p) => p >= 1)
           .map((p) => (
-            <Button key={p} onClick={() => setValueAndActual(p)}>
+            <Button key={p} disabled={isLoading} onClick={() => setValueAndActual(p)}>
               {p}
             </Button>
           ))}
 
         <Form.Control
-          size="sm"
           type="text"
           value={value}
-          placeholder="Go to"
+          disabled={isLoading}
           onBlur={() => setActual(value)}
           onChange={manageChangeInValue}
           onKeyUp={({ key }) => key === "Enter" && setActual(value)}
           style={{
-            width: 60,
+            width: 70,
             borderRadius:
               `.${actual === 1 ? 25 : 0}rem .${actual === size ? 25 : 0}rem ` +
               `.${actual === size ? 25 : 0}rem .${actual === 1 ? 25 : 0}rem`,
@@ -53,7 +55,7 @@ export default function NavigationButtons({ actual, size, setActual }) {
           .map((_, i) => actual + 1 + i)
           .filter((p) => p <= size)
           .map((p) => (
-            <Button key={p} onClick={() => setValueAndActual(p)}>
+            <Button key={p} disabled={isLoading} onClick={() => setValueAndActual(p)}>
               {p}
             </Button>
           ))}
@@ -61,7 +63,9 @@ export default function NavigationButtons({ actual, size, setActual }) {
 
       {actual <= size - 3 ? (
         <ButtonGroup className="me-2">
-          <Button onClick={() => setValueAndActual(size)}>{size}</Button>
+          <Button disabled={isLoading} onClick={() => setValueAndActual(size)}>
+            {size}
+          </Button>
         </ButtonGroup>
       ) : null}
     </div>

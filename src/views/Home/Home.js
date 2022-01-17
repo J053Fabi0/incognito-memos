@@ -25,6 +25,7 @@ export default function Home() {
   const [size, setSize] = useState(querySize);
   const [hasNext, setHasNext] = useState(false);
   const [lastPosiblePage, setLastPosiblePage] = useState(0);
+  const [isLoadingNewMemos, setIsLoadingNewMemos] = useState(false);
 
   // Get the lastPosiblePage and set the query param page accordingly.
   useEffect(() => {
@@ -51,14 +52,17 @@ export default function Home() {
 
   // Load the corresponding memos.
   useEffect(() => {
-    if (page !== undefined)
+    if (page !== undefined) {
+      setIsLoadingNewMemos(true);
       axios
         .get(`${API_URL}/memos?page=${page}&size=${size}`)
         .then((res) => {
           setMemos(res.data.message.results);
           setHasNext(res.data.message.hasNext);
         })
-        .catch((e) => console.log(e));
+        .catch((e) => console.log(e))
+        .finally(() => setIsLoadingNewMemos(false));
+    }
   }, [page, size]);
 
   return (
@@ -67,11 +71,21 @@ export default function Home() {
 
       {memos.length !== 0 ? (
         <Container>
-          <NavigationButtons actual={page} size={lastPosiblePage} setActual={setPage} />
+          <NavigationButtons
+            actual={page}
+            size={lastPosiblePage}
+            setActual={setPage}
+            isLoading={isLoadingNewMemos}
+          />
 
           <MemosCards memos={memos} />
 
-          <NavigationButtons actual={page} size={lastPosiblePage} setActual={setPage} />
+          <NavigationButtons
+            actual={page}
+            size={lastPosiblePage}
+            setActual={setPage}
+            isLoading={isLoadingNewMemos}
+          />
         </Container>
       ) : (
         <SpinnerLoading />
