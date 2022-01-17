@@ -1,5 +1,5 @@
 import axios from "axios";
-import MemoCard from "./MemoCard.js";
+import MemosCards from "./MemosCards.js";
 import { Navbar } from "../../components";
 import { Container } from "react-bootstrap";
 import SpinnerLoading from "./SpinnerLoading.js";
@@ -24,20 +24,22 @@ export default function Home() {
   const [page, setPage] = useState(undefined);
   const [size, setSize] = useState(querySize);
   const [hasNext, setHasNext] = useState(false);
+  const [lastPosiblePage, setLastPosiblePage] = useState(0);
 
   // Get the lastPosiblePage and set the query param page accordingly.
   useEffect(() => {
     axios
       .get(`${API_URL}/lastPosiblePage?size=${size}`)
       .then(({ data }) => {
-        const { lastPosiblePage } = data.message;
+        const { lastPosiblePage: lastPos } = data.message;
+        setLastPosiblePage(lastPos);
         const pageToSet = (() => {
           if (!isNaN(queryPage)) {
-            if (parseInt(queryPage) > lastPosiblePage) return lastPosiblePage;
+            if (parseInt(queryPage) > lastPos) return lastPos;
             if (parseInt(queryPage) <= 0) return 1;
             return parseInt(queryPage);
           }
-          return lastPosiblePage;
+          return lastPos;
         })();
         setPage(pageToSet);
       })
@@ -65,11 +67,11 @@ export default function Home() {
 
       {memos.length !== 0 ? (
         <Container>
-          <NavigationButtons />
+          <NavigationButtons actual={page} size={lastPosiblePage} setActual={setPage} />
 
-          <MemoCard memos={memos} />
+          <MemosCards memos={memos} />
 
-          <NavigationButtons />
+          <NavigationButtons actual={page} size={lastPosiblePage} setActual={setPage} />
         </Container>
       ) : (
         <SpinnerLoading />

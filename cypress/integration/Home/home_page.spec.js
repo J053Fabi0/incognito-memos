@@ -21,7 +21,7 @@ describe("Loading of the memos.", () => {
 });
 
 describe("Querys.", () => {
-  describe("Page given.", () => {
+  describe("Page given without size.", () => {
     const templatePage =
       (page, pageToExpect, lastPosiblePage = page + 1) =>
       () => {
@@ -31,7 +31,7 @@ describe("Querys.", () => {
         );
         cy.intercept("GET", `/memos?page=${pageToExpect}&size=${size}`, { fixture: "memos.json" }).as("memos");
 
-        cy.visit(`/?size=${size}&page=${page}`);
+        cy.visit(`/?page=${page}`);
         cy.wait("@lastPosiblePage");
         cy.wait("@memos");
 
@@ -48,7 +48,7 @@ describe("Querys.", () => {
     });
   });
 
-  describe("Size given.", () => {
+  describe("Size given without page.", () => {
     const templateSize = (size, sizeToExpect) => () => {
       const page = 10;
       cy.intercept("GET", `/lastPosiblePage?size=${sizeToExpect}`, { message: { lastPosiblePage: page } }).as(
@@ -56,7 +56,7 @@ describe("Querys.", () => {
       );
       cy.intercept("GET", `/memos?page=${page}&size=${sizeToExpect}`, { fixture: "memos.json" }).as("memos");
 
-      cy.visit(`/?size=${size}&page=${page}`);
+      cy.visit(`/?size=${size}`);
       cy.wait("@lastPosiblePage");
       cy.wait("@memos");
 

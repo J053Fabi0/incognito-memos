@@ -5,7 +5,7 @@ import { Card } from "react-bootstrap";
 
 const options = { weekday: "short", year: "numeric", month: "short", day: "numeric", hour12: true };
 
-export default function MemoCard({ memos }) {
+export default function MemosCards({ memos }) {
   const CardStyled = styled(({ className, children, txID }) => (
     <Card id={txID} className={`memoCard mt-2 ${className}`}>
       <a href={`#${txID}`}>{children}</a>
