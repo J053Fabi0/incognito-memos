@@ -14,11 +14,11 @@ export default function NavigationButtons({ actual, size, setActual }) {
 
   return (
     <div className="w-100 my-3 d-flex justify-content-center" data-testid="navigationButtons">
-      {actual === 1 ? null : (
+      {actual >= 4 ? (
         <ButtonGroup className="me-2">
           <Button onClick={() => setValueAndActual(1)}>1</Button>
         </ButtonGroup>
-      )}
+      ) : null}
 
       <ButtonGroup className="me-2">
         {Array(2)
@@ -59,11 +59,11 @@ export default function NavigationButtons({ actual, size, setActual }) {
           ))}
       </ButtonGroup>
 
-      {actual === size ? null : (
+      {actual <= size - 3 ? (
         <ButtonGroup className="me-2">
           <Button onClick={() => setValueAndActual(size)}>{size}</Button>
         </ButtonGroup>
-      )}
+      ) : null}
     </div>
   );
 }
