@@ -8,21 +8,26 @@ const options = { weekday: "short", year: "numeric", month: "short", day: "numer
 export default function MemosCards({ memos }) {
   const CardStyled = styled(({ className, children, txID }) => (
     <Card id={txID} className={`memoCard mt-2 ${className}`}>
-      <a href={`#${txID}`}>{children}</a>
+      {children}
     </Card>
   ))({
     ":hover": { borderColor: "#747474" },
-    cursor: "pointer",
-    "& > a": { textDecoration: "none", color: "var(--bs-body-color)" },
+    "& a": { textDecoration: "none", color: "var(--bs-body-color)", ":hover": { textDecoration: "underline" } },
   });
 
-  const HeaderStyled = styled(({ className, text }) => <Header className={className}>{text}</Header>)({
+  const HeaderStyled = styled(({ className, text, txID }) => (
+    <Header className={className}>
+      <a href={`https://explorer.incognito.org/tx/${txID}`} target="_blank">
+        {text}
+      </a>
+    </Header>
+  ))({
     fontSize: "0.694rem",
   });
 
   return memos.map(({ memo, txID, date }) => (
     <CardStyled key={txID} txID={txID}>
-      <HeaderStyled text={new Date(date).toLocaleTimeString(undefined, options)} />
+      <HeaderStyled txID={txID} text={new Date(date).toLocaleTimeString(undefined, options)} />
       <Body>
         <p className="mb-0">{memo}</p>
       </Body>
